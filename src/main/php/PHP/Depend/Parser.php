@@ -5728,6 +5728,16 @@ abstract class PHP_Depend_Parser implements PHP_Depend_ConstantsI
         } else if ($this->_namespaceName !== null
             && $this->_namespacePrefixReplaced === false
         ) {
+            // Test if it is an internal function
+            try {
+                $name = join('', $fragments);
+                $ref = new ReflectionFunction($name);
+                if ($ref->isInternal()) {
+                    return $name;
+                }
+            } catch (Exception $e) {
+            }
+
             // Prepend current namespace
             array_unshift($fragments, $this->_namespaceName, '\\');
         }

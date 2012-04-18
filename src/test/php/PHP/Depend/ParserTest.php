@@ -1413,6 +1413,40 @@ class PHP_Depend_ParserTest extends PHP_Depend_AbstractTest
     }
 
     /**
+     * testParseNonInternalFunctionInNamespacedClass
+     *
+     * @return void
+     */
+    public function testParseNonInternalFunctionInNamespacedClass()
+    {
+        $function = self::parseCodeResourceForTest()
+            ->current()
+            ->getClasses()
+            ->current()
+            ->getMethods()
+            ->current()
+            ->getFirstChildOfType(PHP_Depend_Code_ASTFunctionPostfix::CLAZZ);
+        $this->assertEquals('nspace\custom', $function->getImage());
+    }
+
+    /**
+     * testParseInternalFunctionInNamespacedClass
+     *
+     * @return void
+     */
+    public function testParseInternalFunctionInNamespacedClass()
+    {
+        $function = self::parseCodeResourceForTest()
+            ->current()
+            ->getClasses()
+            ->current()
+            ->getMethods()
+            ->current()
+            ->getFirstChildOfType(PHP_Depend_Code_ASTFunctionPostfix::CLAZZ);
+        $this->assertEquals('var_dump', $function->getImage());
+    }
+
+    /**
      * testParseClosureAsFunctionArgument
      *
      * @return void
